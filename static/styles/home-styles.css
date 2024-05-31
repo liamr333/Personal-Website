@@ -1,0 +1,153 @@
+body {
+    height: 100%;
+    width: 100%;
+    background-color: black !important;
+    font-family: League Gothic, sans-serif !important;
+    color: #f1ef80 !important;
+    cursor: url('static/images/transparent-higgins.png'), auto;
+}
+
+h1, h2 {
+    text-align: center;
+}
+
+img {
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+    max-width: 80%;
+    max-height: 80%;
+}
+
+.tab-pane {
+
+    border-left: 1px solid #ddd;
+    border-right: 1px solid #ddd;
+    border-bottom: 1px solid #ddd;
+    border-radius: 0px 0px 5px 5px;
+    padding: 10px;
+}
+
+.nav-tabs {
+    margin-bottom: 0;
+}
+
+.small-header {
+    font-size: 30px;
+}
+
+.fa {
+    padding: 20px;
+    width: 70px;
+    text-align: center;
+    text-decoration: none;
+  }
+
+.fa-github {
+    color:grey;
+    font-size: 100px;
+}
+
+.fa-linkedin {
+    color: lightblue;
+    font-size: 30px;
+}
+
+.fa:hover {
+    opacity: 0.7;
+    background-color: white;
+}
+
+.rcorners1 {
+    border-radius: 25px;
+    padding: 20px;
+}
+
+.container {
+    display: flex;
+    justify-content: center;
+}
+  
+.square {
+    flex: 1; /* Each square takes up equal space */
+    width: 800px;
+    max-width: 100%; /* Each square can take up to one-third of the container width */
+    margin: 10px;
+}
+
+.float-container {
+    border-radius: 25px;
+    padding: 20px;
+    height: 400px;
+    width: fit-content;
+    border: solid 3px aquamarine;
+    overflow: hidden;
+}
+
+.float-child-left {
+    width: 40%;
+    height: 100%;
+    float: left;
+    padding: 20px;
+    object-fit: cover;
+}
+
+.float-child-right {
+    width: 60%;
+    float: right;
+    padding: 20px;
+}
+
+.content-section {
+    padding: 10px 20px;
+    border: solid 3px aquamarine;
+    border-radius: 3px;
+    margin-bottom: 20px;
+}
+
+.hsk-word {
+    color: black;
+    font-size: 25px;
+}
+
+.not-hanzi {
+    color: black;
+    font-size: 25px;
+}
+
+.box {
+    float: left;
+    height: 20px;
+    width: 20px;
+    margin-bottom: 15px;
+    clear: both;
+    font-size: 20px;
+}
+  
+.aqua {
+    background-color: aqua;
+}
+
+.green {
+    background-color: green;
+}
+
+.yellow {
+    background-color: yellow;
+}
+
+.orange {
+    background-color: orange;
+}
+
+.red {
+    background-color: red;
+}
+
+.purple {
+    background-color: purple;
+}
+
+.darkgrey {
+    background-color: darkgrey;
+}
