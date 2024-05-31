@@ -1,6 +1,7 @@
 import pandas as pd
 import re
 import itertools
+import pinyin
 
 df = pd.read_csv('hsk_cleaned.csv')
 
@@ -30,6 +31,7 @@ hsk6_word_set = set(list(df_hsk6['Simplified']) + list(df_hsk6['Traditional']))
 hsk7_9_word_set = set(list(df_hsk7_9['Simplified']) + list(df_hsk7_9['Traditional']))
 hsk_word_set = set(list(df['Simplified']) + list(df['Traditional']))
 
+
 # for a given hanzi, return the lowest level that it appears in
 def get_hanzi_level(hanzi):
     if hanzi in hsk1_hanzi_set:
@@ -57,7 +59,7 @@ def is_hanzi(char):
 def is_all_hanzi(string):
     return all([is_hanzi(char) for char in list(string)])
 
-# this function was written by ChatGPT
+
 def escape_regex(string):
     regex_reserved_chars = r'\^$.|?*+(){}[]'
     escaped_string = re.sub(f'([{re.escape(regex_reserved_chars)}])', r'\\\1', string)
@@ -132,7 +134,7 @@ def get_hsk_word_level(word):
 def word_in_hsk(word):
     return word in hsk_word_set or word in hsk_hanzi_set
 
-   
+
 # for a string s, returns the length of the longest of s[:1], s[:2], s[:3], s[:4] that is an hsk word
 # if none of those prefix substrings are in the hsk word set, then it returns the shortest substring (s[:1])
 
@@ -140,7 +142,7 @@ def word_in_hsk(word):
 def get_next_token_length(string):
     next_possible_tokens = []
     
-    for i in range(1, min([len(string), 5])):
+    for i in range(1, min([len(string) + 1, 5])):
         next_possible_tokens.append(string[:i])
         
     while len(next_possible_tokens) > 0:
@@ -152,16 +154,15 @@ def get_next_token_length(string):
 
 
 def tokenize_hanzi_string(string):
-
     tokens = []
-
     while len(string) > 0:
-
         next_index = get_next_token_length(string)
-        next_token = string[:next_index]
-        tokens.append(next_token)
+        new_word = string[:next_index]
+        new_word_level = get_hsk_word_level(new_word)
+        new_word_pinyin = pinyin.get(new_word)
+        new_token = [new_word, new_word_level, new_word_pinyin]
+        tokens.append(new_token)
         string = string[next_index:]
-
     return tokens
 
 

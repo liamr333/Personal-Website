@@ -1,14 +1,25 @@
 from flask import Flask, render_template, redirect, url_for, request, session
+from flask_session import Session
 from chinese_books_list import books
 from hsk_analysis_form import HSKAnalysisForm
 import hsk_hanzi_parser
+import pandas as pod
 import os
 import re
+import plotly
+import plotly.express as px
+
 app = Flask(__name__)
 
 app.config['SECRET_KEY'] = 'secret_key'
+app.config['SESSION_TYPE'] = 'filesystem'
+
+Session(app)
+
 num_tabs = 3
 
+labels = ['1', '2', '3', '4', '5', '6', '7', '8', '9', '10']
+values = [i for i in range(10)]
 
 def get_tokens_and_stylings(text):
     tokens = hsk_hanzi_parser.parse_text(text)
@@ -26,15 +37,23 @@ def get_tokens_and_stylings(text):
         'Unknown' : 'not-hanzi'
     }
 
+    purple_culture_url_stem = 'https://www.purpleculture.net/dictionary-details/?word={}'
+
     for token in tokens:
         token_text = token[0]
         contains_newline = '\n' in token_text
-        token_styling = difficulty_styling_dict[token[1]]
+        token_difficulty = token[1]
+        token_styling = difficulty_styling_dict[token_difficulty]
+        pinyin = token[2] if len(token) >= 3 else ''
 
         new_token_styling = {
             'word' : token_text, 
-            'styling' : token_styling, 
-            'contains_newline' : contains_newline
+            'styling' : token_styling,
+            'difficulty' : token_difficulty,
+            'contains_newline' : contains_newline,
+            'pinyin' : pinyin,
+            'is_hanzi' : hsk_hanzi_parser.is_all_hanzi(token_text),
+            'definition_url' : purple_culture_url_stem.format(token_text) if hsk_hanzi_parser.is_all_hanzi(token_text) else ''
         }
 
         token_stylings.append(new_token_styling)
@@ -94,7 +113,7 @@ def home():
         print(session['json_data'])
         return redirect(url_for('home_with_tab', tab_name='tab3'))
 
-    return render_template('home.html', books=books, total_pages=total_pages, tab_directions=tab_directions, form=form, hsk_tokens=hsk_tokens)
+    return render_template('home.html', books=books, total_pages=total_pages, tab_directions=tab_directions, form=form, hsk_tokens=hsk_tokens, labels=labels, values=values)
 
 
 @app.route("/<tab_name>", methods=['GET', 'POST'])
@@ -122,7 +141,7 @@ def home_with_tab(tab_name):
         print(session['json_data'])
         return redirect(url_for('home_with_tab', tab_name='tab3'))
 
-    return render_template('home.html', books=books, total_pages=total_pages, tab_directions=tab_directions, form=form, hsk_tokens = hsk_tokens)
+    return render_template('home.html', books=books, total_pages=total_pages, tab_directions=tab_directions, form=form, hsk_tokens = hsk_tokens, labels=labels, values=values)
 
 
 if __name__ == "__main__":
