@@ -18,11 +18,9 @@ Session(app)
 
 num_tabs = 3
 
-labels = ['1', '2', '3', '4', '5', '6', '7', '8', '9', '10']
-values = [i for i in range(10)]
 
-def get_tokens_and_stylings(text):
-    tokens = hsk_hanzi_parser.parse_text(text)
+def get_token_stylings(tokens):
+    #tokens = hsk_hanzi_parser.parse_text(text)
     token_stylings = []
 
     difficulty_styling_dict = {
@@ -53,7 +51,8 @@ def get_tokens_and_stylings(text):
             'contains_newline' : contains_newline,
             'pinyin' : pinyin,
             'is_hanzi' : hsk_hanzi_parser.is_all_hanzi(token_text),
-            'definition_url' : purple_culture_url_stem.format(token_text) if hsk_hanzi_parser.is_all_hanzi(token_text) else ''
+            'definition_url' : purple_culture_url_stem.format(token_text) if hsk_hanzi_parser.is_all_hanzi(token_text) else '',
+            'difficulty' : token_difficulty
         }
 
         token_stylings.append(new_token_styling)
@@ -104,25 +103,34 @@ def home():
     tab_directions = get_tab_directions(1)
     total_pages = get_total_pages()
     form = HSKAnalysisForm()
-    print(form.errors)
     hsk_tokens = []
 
     if form.validate_on_submit():
-        token_stylings = get_tokens_and_stylings(form.text.data)
-        session['json_data'] = token_stylings
-        print(session['json_data'])
+        tokens = hsk_hanzi_parser.parse_text(form.text.data)
+        token_stylings = get_token_stylings(tokens)
+        token_difficulty_stats = hsk_hanzi_parser.get_difficulty_stats(tokens)
+        session['token_stylings'] = token_stylings
+        session['token_difficulty_stats'] = token_difficulty_stats
         return redirect(url_for('home_with_tab', tab_name='tab3'))
 
-    return render_template('home.html', books=books, total_pages=total_pages, tab_directions=tab_directions, form=form, hsk_tokens=hsk_tokens, labels=labels, values=values)
+    return render_template('home.html', books=books, total_pages=total_pages, tab_directions=tab_directions, form=form, hsk_tokens=hsk_tokens)
 
 
 @app.route("/<tab_name>", methods=['GET', 'POST'])
 def home_with_tab(tab_name):
     # first tab opened by default
-    hsk_tokens = session.pop('json_data', None)
+    hsk_tokens = session.pop('token_stylings', None)
+    difficulty_stats = session.pop('token_difficulty_stats', None)
 
     if hsk_tokens == None:
         hsk_tokens = []
+
+    
+    if difficulty_stats == None:
+        difficulty_stats = {}
+
+    labels = list(difficulty_stats.keys())
+    values = list(difficulty_stats.values())
 
     tab_open_index = 0
     
@@ -136,9 +144,11 @@ def home_with_tab(tab_name):
     total_pages = get_total_pages()
 
     if form.validate_on_submit():
-        token_stylings = get_tokens_and_stylings(form.text.data)
-        session['json_data'] = token_stylings
-        print(session['json_data'])
+        tokens = hsk_hanzi_parser.parse_text(form.text.data)
+        token_stylings = get_token_stylings(tokens)
+        token_difficulty_stats = hsk_hanzi_parser.get_difficulty_stats(tokens)
+        session['token_stylings'] = token_stylings
+        session['token_difficulty_stats'] = token_difficulty_stats
         return redirect(url_for('home_with_tab', tab_name='tab3'))
 
     return render_template('home.html', books=books, total_pages=total_pages, tab_directions=tab_directions, form=form, hsk_tokens = hsk_tokens, labels=labels, values=values)

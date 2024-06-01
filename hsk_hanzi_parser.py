@@ -192,3 +192,25 @@ def parse_text(text):
             tokens.append(non_hanzi_token)
             
     return tokens
+
+
+def get_difficulty_stats(tokens):
+
+    difficulty_stats = {
+        '1': 0,
+        '2': 0,
+        '3': 0,
+        '4': 0,
+        '5': 0,
+        '6': 0,
+        '7-9': 0,
+        'Unknown': 0
+    }
+
+    for token in tokens:
+        difficulty = token[1]
+        print(difficulty)
+        if difficulty in difficulty_stats.keys():
+            difficulty_stats[difficulty] += 1
+
+    return difficulty_stats
