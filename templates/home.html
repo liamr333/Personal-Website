@@ -31,7 +31,6 @@
 
     <ul id="results" class="nav nav-tabs nav-justified">
         <li class="nav-item {{ tab_directions.tab1 }}"><a href="#intro" class="nav-link {{ tab_directions.tab1 }}" data-toggle="tab"><h2>Basic Info</h2></a></li>
-        <li class="nav-item {{ tab_directions.tab2 }}"><a href="#chinese_books" class="nav-link {{ tab_directions.tab2 }}" data-toggle="tab"><h2>Chinese Book List</h2></a></li>
         <li class="nav-item {{ tab_directions.tab3 }}"><a href="#chinese_text_analysis" class="nav-link {{ tab_directions.tab3 }}" data-toggle="tab"><h2>Chinese Text Analysis</h2></a></li>
     </ul>
 
@@ -40,28 +39,30 @@
       <div class="tab-pane fade {{ tab_directions.tab_pane1 }}" id="intro">
         <div class="container">
           <div class="square rcorners1">
-            <h6>I am a computer science undergrad at UTSA studying to become a data engineer. This is my first attempt at front-end. It will get less ugly over time.</h6>
+            <h6>I am a computer science undergrad at UTSA studying to become a data engineer. In my free time I like playing the electric guitar, juggling, cooking, and working out. I'm a language enthusiast who has been studying
+              Mandarin for nearly a decade and just got started with Spanish. My favorite beer is Guinness.
+            </h6>
+            <br/>
+            <br/>
+            <img src="static/images/headshot.jpg" class="headshot">
+            <br/>
+            <br/>
             <a href="https://www.linkedin.com/in/liam-ralph-161b56176/" target="_blank">
               <i class="fa fa-linkedin fa-2x"></i>
             </a>
             <a href="https://github.com/liamr333" target="_blank">
               <i class="fa fa-github fa-2x"></i>
             </a>
-            <a href="https://www.youtube.com/watch?v=dQw4w9WgXcQ" target="_blank">
-              <p>Click here to view my stance on the Israeli-Palestinian conflict</p>
-            </a>
           </div>
         </div>
-      </div>
 
-      <div class="tab-pane fade {{ tab_directions.tab_pane2 }}" id="chinese_books">
         <div class="container">
 
           <div class="square rcorners1">
             <h5>I have been teaching myself Mandarin for almost a decade. Here is a list of the books I have read in Mandarin.</h5>
             <h5>Total pages read: {{ total_pages }}</h5>
             <br/>
-            <img src="static/images/zaoshanghaozhongguo.jpg">
+            <img src="static/images/zaoshanghaozhongguo.jpg" style="border: solid 5px aquamarine">
             <br/>
             
             {% for book in books %}
@@ -85,6 +86,8 @@
         </div>
 
       </div>
+
+
 
       <div class="tab-pane fade {{ tab_directions.tab_pane3 }}" id="chinese_text_analysis">
         <div class="container">
