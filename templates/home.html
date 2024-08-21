@@ -62,7 +62,7 @@
             <h5>I have been teaching myself Mandarin for almost a decade. Here is a list of the books I have read in Mandarin.</h5>
             <h5>Total pages read: {{ total_pages }}</h5>
             <br/>
-            <img src="static/images/zaoshanghaozhongguo.jpg" style="border: solid 5px aquamarine">
+            <img src="static/images/zaoshanghaozhongguo.jpg" style="border: solid 5px maroon">
             <br/>
             
             {% for book in books %}
@@ -80,6 +80,7 @@
                 <p>{{ book.description }}</p>
               </div>
             </div>
+            <br/>
             {% endfor %}
 
           </div>
@@ -146,9 +147,9 @@
         
 
         <div class="container">
-          <div class="content-section" style="background: #DDDDDD;">
+          <div class="content-section" style="background: #DDDDDD; width: fit-content;">
             <h4 style="color: black;">Word Distribution</h4>
-            <canvas id="barChart" width="700" height="500"></canvas>
+            <canvas id="barChart"></canvas>
             <script>
             const ctx = document.getElementById('barChart');
             const barChart = new Chart(ctx, {
